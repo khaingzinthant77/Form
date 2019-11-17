@@ -13,6 +13,7 @@ import {
   ScrollView
 } from "react-native";
 import * as Font from "expo-font";
+import RadioBtn from "./components/RadioBtn";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -38,7 +39,8 @@ export default class App extends React.Component {
       nrc_en: "",
       eng: "",
       number_mm: "",
-      number_en: ""
+      number_en: "",
+      selectedData: ""
     };
   }
   async componentDidMount() {
@@ -46,6 +48,9 @@ export default class App extends React.Component {
       "Pyidaungsu-Regular": require("./assets/Pyidaungsu/Pyidaungsu-Regular.ttf")
     });
     this.setState({ fontLoaded: true });
+  }
+  changeSelectedData(value) {
+    this.setState({ selectedData: value });
   }
   CheckTextInput = () => {
     if (this.state.fatherName == "") {
@@ -58,7 +63,10 @@ export default class App extends React.Component {
       alert("Please Enter National");
     } else if (this.state.dob == "") {
       alert("Please Enter Date of Birth");
+    } else if (this.state.selectedData == "") {
+      alert("Please Choose Gender");
     } else {
+      //  console.log(this.props.active);
       alert("Successful Register");
       this.setState({ business_man_mm: "" }),
         this.setState({ business_man_en: "" }),
@@ -80,6 +88,7 @@ export default class App extends React.Component {
         this.setState({ address: "" }),
         this.setState({ phone: "" }),
         this.setState({ email: "" });
+      this.setState({ selectedData: "" });
     }
   };
   render() {
@@ -398,6 +407,23 @@ export default class App extends React.Component {
                     onChangeText={education => this.setState({ education })}
                     value={this.state.education}
                   ></TextInput>
+                </View>
+                <View>
+                  <Text style={styles.business}>(ဆ) ကျား/မ *</Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <RadioBtn
+                      label="ကျာ:"
+                      active={this.state.selectedData == "Male" ? true : false}
+                      onPress={this.changeSelectedData.bind(this, "Male")}
+                    />
+                    <RadioBtn
+                      label="မ"
+                      active={
+                        this.state.selectedData == "Female" ? true : false
+                      }
+                      onPress={this.changeSelectedData.bind(this, "Female")}
+                    />
+                  </View>
                 </View>
                 <View style={{ marginVertical: 20 }}>
                   <Text style={styles.business}>(ဇ)မွေးသက္ကရာဇ် *</Text>
